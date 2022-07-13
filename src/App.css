@@ -54,9 +54,16 @@ main {
 }
 
 .die-num {
-  font-size: 2rem;
+  height: 4px;
+  width: 4px;
+  background-color: black;
+  border-radius: 50%;
 }
-
+.die-placement{
+  display: grid;
+  grid-template-columns : auto auto;
+  gap: 2px 2px;
+}
 .roll-dice {
   height: 50px;
   width: 150px;

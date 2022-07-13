@@ -7,13 +7,28 @@ export default function App() {
 
     const [dice, setDice] = React.useState(allNewDice())
     const [tenzies, setTenzies] = React.useState(false)
-    
+    const [rolls, setRolls]=React.useState(0)
+    const [time, setTime] = React.useStateuseState(0)
+    const [running, setRunning] = React.useState(true);
+    React.useEffect(() => {
+      let interval;
+      if (running) {
+        interval = setInterval(() => {
+          setTime((prevTime) => prevTime + 10);
+        }, 10);
+      } else if (!running) {
+        clearInterval(interval);
+      }
+      return () => clearInterval(interval);
+    }, [running]);
+   
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
         const allSameValue = dice.every(die => die.value === firstValue)
         if (allHeld && allSameValue) {
             setTenzies(true)
+            setRunning(false)
         }
     }, [dice])
 
@@ -32,7 +47,9 @@ export default function App() {
         }
         return newDice
     }
-    
+    function rollNo(){
+        setRolls(oldno => oldno+1)
+    }
     function rollDice() {
         if(!tenzies) {
             setDice(oldDice => oldDice.map(die => {
@@ -43,6 +60,8 @@ export default function App() {
         } else {
             setTenzies(false)
             setDice(allNewDice())
+            setRolls(-1)
+            setTime(0)
         }
     }
     
@@ -74,10 +93,14 @@ export default function App() {
             </div>
             <button 
                 className="roll-dice" 
-                onClick={rollDice}
+                onClick={function(event){rollDice(); rollNo()}}
             >
                 {tenzies ? "New Game" : "Roll"}
             </button>
+            <div><p>Rolls: {rolls}</p>
+            <p>Time: <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+          <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+          <span>{("0" + ((time / 10) % 100)).slice(-2)}</span></p></div>
         </main>
     )
 }

@@ -10,7 +10,8 @@ export default function Die(props) {
             style={styles}
             onClick={props.holdDice}
         >
-            <h2 className="die-num">{props.value}</h2>
+         <div className="die-placement"> {[...Array(props.value)].map((elem,index) => <div className="die-num"></div>)}</div>
+    
         </div>
     )
 }
