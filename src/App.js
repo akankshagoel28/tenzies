@@ -10,7 +10,18 @@ export default function App() {
     const [rolls, setRolls]=React.useState(0)
     const [seconds,setSeconds]=React.useState(0)
     const [minutes,setMinutes]=React.useState(0)
+    const [highscore, setHighScore] = React.useState(() => {
+        const saved = localStorage.getItem("highscore");
+        const initialValue = JSON.parse(saved);
+        return initialValue || "";
+      });
     var timer;
+    React.useEffect(() => {
+        if(time<highscore){
+        localStorage.setItem("highscore", JSON.stringify(highscore));
+        setHighScore(time)
+        }
+      }, [highscore]);
     React.useEffect(() => {
         timer = setInterval(() =>{
         setSeconds(seconds + 1)
@@ -23,7 +34,7 @@ export default function App() {
     return ()=> clearInterval(timer);
 
 })
-   
+    var time;
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -31,6 +42,7 @@ export default function App() {
         if (allHeld && allSameValue) {
             setTenzies(true)
             clearInterval(timer)
+            time=timer
         }
     }, [dice])
 
@@ -101,7 +113,8 @@ export default function App() {
                 {tenzies ? "New Game" : "Roll"}
             </button>
             <div className="extras"><p>Rolls: {rolls}</p>
-            <p>Time: {minutes<10?"0"+minutes:minutes}:{seconds<10?"0"+seconds:seconds}</p></div>
+            <p>Time: {minutes>0?minutes+"m ":""}{seconds<10?seconds +"s":seconds+"s"}</p>
+            <h5 style={{margin:"8px 8px",color:"red"}}>Least time: {highscore?"0":highscore}</h5></div>
         </main>
     )
 }
