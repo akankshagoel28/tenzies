@@ -13,7 +13,7 @@ body {
 
 main {
   background-color: #F5F5F5;
-  height: 400px;
+  height: 500px;
   max-width: 800px;
   border-radius: 5px;
   padding: 20px;
@@ -82,4 +82,15 @@ main {
 
 .roll-dice:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+
+.extras{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.extras p{
+  margin:8px 8px;
 }

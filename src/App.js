@@ -8,19 +8,21 @@ export default function App() {
     const [dice, setDice] = React.useState(allNewDice())
     const [tenzies, setTenzies] = React.useState(false)
     const [rolls, setRolls]=React.useState(0)
-    const [time, setTime] = React.useStateuseState(0)
-    const [running, setRunning] = React.useState(true);
+    const [seconds,setSeconds]=React.useState(0)
+    const [minutes,setMinutes]=React.useState(0)
+    var timer;
     React.useEffect(() => {
-      let interval;
-      if (running) {
-        interval = setInterval(() => {
-          setTime((prevTime) => prevTime + 10);
-        }, 10);
-      } else if (!running) {
-        clearInterval(interval);
-      }
-      return () => clearInterval(interval);
-    }, [running]);
+        timer = setInterval(() =>{
+        setSeconds(seconds + 1)
+        if(seconds === 59)
+        {
+            setSeconds(0)
+            setMinutes(minutes+1)
+        }
+    },1000)
+    return ()=> clearInterval(timer);
+
+})
    
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
@@ -28,7 +30,7 @@ export default function App() {
         const allSameValue = dice.every(die => die.value === firstValue)
         if (allHeld && allSameValue) {
             setTenzies(true)
-            setRunning(false)
+            clearInterval(timer)
         }
     }, [dice])
 
@@ -61,7 +63,8 @@ export default function App() {
             setTenzies(false)
             setDice(allNewDice())
             setRolls(-1)
-            setTime(0)
+            setSeconds(0)
+            setMinutes(0)
         }
     }
     
@@ -97,10 +100,8 @@ export default function App() {
             >
                 {tenzies ? "New Game" : "Roll"}
             </button>
-            <div><p>Rolls: {rolls}</p>
-            <p>Time: <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-          <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-          <span>{("0" + ((time / 10) % 100)).slice(-2)}</span></p></div>
+            <div className="extras"><p>Rolls: {rolls}</p>
+            <p>Time: {minutes<10?"0"+minutes:minutes}:{seconds<10?"0"+seconds:seconds}</p></div>
         </main>
     )
 }
