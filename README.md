@@ -1,6 +1,6 @@
 # Tenzies
 
-Created a fun game using reactjs which tracks your time and score using reactjs
+Created a fun game using reactjs which tracks your time and score.
 
 ## Available Scripts
 
